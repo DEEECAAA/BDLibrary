@@ -1,37 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
+const userController = require('../controllers/userController');
 
-// CREATE
-router.post('/', async (req, res) => {
-  const user = new User(req.body);
-  await user.save();
-  res.status(201).json(user);
-});
-
-// READ ALL
-router.get('/', async (req, res) => {
-  const users = await User.find();
-  res.json(users);
-});
-
-// READ ONE
-router.get('/:id', async (req, res) => {
-  const user = await User.findById(req.params.id);
-  if (user) res.json(user);
-  else res.status(404).json({ error: 'User not found' });
-});
-
-// UPDATE
-router.put('/:id', async (req, res) => {
-  const updated = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  res.json(updated);
-});
-
-// DELETE
-router.delete('/:id', async (req, res) => {
-  await User.findByIdAndDelete(req.params.id);
-  res.json({ message: 'User deleted' });
-});
+// CRUD
+router.post('/', userController.createUser);
+router.get('/', userController.getAllUsers);
+router.get('/:id', userController.getUserById);
+router.put('/:id', userController.updateUser);
+router.delete('/:id', userController.deleteUser);
 
 module.exports = router;

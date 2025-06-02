@@ -10,7 +10,6 @@ app.use(express.json());
 connectDB();
 
 app.use('/api/books', require('./routes/bookRoutes'));
-app.use('/api/authors', require('./routes/authorRoutes'));
 app.use('/api/reviews', require('./routes/reviewRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 
