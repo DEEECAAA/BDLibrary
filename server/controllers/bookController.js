@@ -1,4 +1,5 @@
 const Book = require('../models/Book');
+const Review = require('../models/Review'); 
 
 // CREATE
 exports.createBook = async (req, res) => {
@@ -45,8 +46,15 @@ exports.updateBook = async (req, res) => {
 // DELETE
 exports.deleteBook = async (req, res) => {
   try {
-    await Book.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Book deleted' });
+    const bookId = req.params.id;
+
+    // Elimina il libro
+    await Book.findByIdAndDelete(bookId);
+
+    // Elimina tutte le recensioni associate
+    await Review.deleteMany({ book_id: bookId });
+
+    res.json({ message: 'Book and related reviews deleted' });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

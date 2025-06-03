@@ -13,9 +13,8 @@ fs.createReadStream('Books_data_raw.csv') // <--- Nome del tuo CSV
     const { bid, title, author, category } = data;
 
     books.push({
-      _id: parseInt(bid),
       title: title.trim(),
-      author_id: author.trim(),
+      author: author.trim(),
       genre: category.trim(),
     });
   })

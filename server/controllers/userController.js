@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const Review = require('../models/Review');
+const bcrypt = require('bcrypt');
 
 // CREATE
 exports.createUser = async (req, res) => {
@@ -35,8 +37,18 @@ exports.getUserById = async (req, res) => {
 // UPDATE
 exports.updateUser = async (req, res) => {
   try {
-    const updated = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.json(updated);
+    const updates = { ...req.body };
+
+    // Se l'utente vuole cambiare password, criptala
+    if (updates.password) {
+      updates.password = await bcrypt.hash(updates.password, 10);
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, updates, { new: true, runValidators: true });
+
+    // Rimuovi password prima di restituire
+    const { password, ...userWithoutPassword } = updatedUser.toObject();
+    res.json(userWithoutPassword);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -45,8 +57,18 @@ exports.updateUser = async (req, res) => {
 // DELETE
 exports.deleteUser = async (req, res) => {
   try {
-    await User.findByIdAndDelete(req.params.id);
-    res.json({ message: 'User deleted' });
+    const userId = req.params.id;
+
+    // Elimina l'utente
+    const deletedUser = await User.findByIdAndDelete(userId);
+    if (!deletedUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Elimina le recensioni associate all'utente
+    await Review.deleteMany({ user_id: userId });
+
+    res.json({ message: 'User and associated reviews deleted' });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

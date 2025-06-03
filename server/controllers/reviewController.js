@@ -44,8 +44,21 @@ exports.updateReview = async (req, res) => {
 
 // DELETE
 exports.deleteReview = async (req, res) => {
+  const user = req.body.user;
+  const reviewId = req.params.id;
+
   try {
-    await Review.findByIdAndDelete(req.params.id);
+    const review = await Review.findById(reviewId);
+    if (!review) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+
+    // Verifica se l'utente è admin o autore della recensione
+    if (!user || (!user.isAdmin && user._id !== String(review.user_id))) {
+      return res.status(403).json({ error: 'Non sei autorizzato a eliminare questa recensione' });
+    }
+
+    await Review.findByIdAndDelete(reviewId);
     res.json({ message: 'Review deleted' });
   } catch (err) {
     res.status(400).json({ error: err.message });

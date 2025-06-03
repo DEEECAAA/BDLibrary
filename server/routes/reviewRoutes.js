@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const reviewController = require('../controllers/reviewController');
+const isAdmin = require('../middleware/isAdmin');
 
 // CRUD
 router.post('/', reviewController.createReview);
