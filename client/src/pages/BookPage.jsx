@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import '../styles/BookPage.css';
 
 const BookPage = () => {
   const { id } = useParams();
@@ -89,99 +90,117 @@ const BookPage = () => {
   if (!book) return <p>Caricamento...</p>;
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h2>{book.title}</h2>
-      <p><strong>Genere:</strong> {book.genre}</p>
-      <p><strong>Autore:</strong> {book.author}</p>
+    <div className="bookpage-container">
+      <section className="book-details">
+        <img
+          src={book.imageUrl || "https://via.placeholder.com/150"}
+          alt={book.title}
+          className="book-cover"
+        />
+        <h2>{book.title}</h2>
+        <p><strong>Genere:</strong> {book.genre}</p>
+        <p><strong>Autore:</strong> {book.author}</p>
 
-      {user?.isAdmin && (
-        <>
-          <button onClick={handleDeleteBook} style={{ backgroundColor: 'red', color: 'white' }}>
-            Elimina libro (Admin)
-          </button>
-          <button onClick={() => setEditingBook(prev => !prev)} style={{ marginLeft: '1rem' }}>
-            {editingBook ? 'Annulla Modifica' : 'Modifica libro'}
-          </button>
+        {user?.isAdmin && (
+          <>
+            <div className="admin-buttons">
+              <button className="btn-delete" onClick={handleDeleteBook}>
+                Elimina libro (Admin)
+              </button>
+              <button className="btn-edit" onClick={() => setEditingBook(prev => !prev)}>
+                {editingBook ? 'Annulla Modifica' : 'Modifica libro'}
+              </button>
+            </div>
 
-          {editingBook && (
-            <form onSubmit={handleBookEditSubmit} style={{ marginTop: '1rem' }}>
-              <h4>Modifica Libro</h4>
-              <label>Titolo:</label><br />
-              <input
-                type="text"
-                value={editBookData.title}
-                onChange={e => setEditBookData(prev => ({ ...prev, title: e.target.value }))}
-              /><br />
-              <label>Autore:</label><br />
-              <input
-                type="text"
-                value={editBookData.author}
-                onChange={e => setEditBookData(prev => ({ ...prev, author: e.target.value }))}
-              /><br />
-              <label>Genere:</label><br />
-              <input
-                type="text"
-                value={editBookData.genre}
-                onChange={e => setEditBookData(prev => ({ ...prev, genre: e.target.value }))}
-              /><br />
-              <button type="submit" style={{ marginTop: '0.5rem' }}>Salva modifiche</button>
-            </form>
-          )}
-        </>
-      )}
-
-      <hr />
-      <h3>📝 Recensioni</h3>
+            {editingBook && (
+              <form className="edit-book-form" onSubmit={handleBookEditSubmit}>
+                <h4>Modifica Libro</h4>
+                <label>Titolo:</label><br />
+                <input
+                  type="text"
+                  value={editBookData.title}
+                  onChange={e => setEditBookData(prev => ({ ...prev, title: e.target.value }))}
+                /><br />
+                <label>Autore:</label><br />
+                <input
+                  type="text"
+                  value={editBookData.author}
+                  onChange={e => setEditBookData(prev => ({ ...prev, author: e.target.value }))}
+                /><br />
+                <label>Genere:</label><br />
+                <input
+                  type="text"
+                  value={editBookData.genre}
+                  onChange={e => setEditBookData(prev => ({ ...prev, genre: e.target.value }))}
+                /><br />
+                <button type="submit" className="btn-save">Salva modifiche</button>
+              </form>
+            )}
+          </>
+        )}
+      </section>
 
       {user && (
-        <form onSubmit={handleReviewSubmit} style={{ marginBottom: '2rem' }}>
-          <h4>{editingReviewId ? "Modifica la recensione" : "Scrivi una recensione"}</h4>
-          <label>Valutazione (1-5): </label>
-          <select
-            value={newReview.rating}
-            onChange={e => setNewReview(prev => ({ ...prev, rating: e.target.value }))}
-          >
-            {[1, 2, 3, 4, 5].map(v => <option key={v} value={v}>{v}</option>)}
-          </select>
-          <br />
-          <textarea
-            placeholder="Scrivi qui il tuo commento (opzionale)"
-            value={newReview.comment}
-            onChange={e => setNewReview(prev => ({ ...prev, comment: e.target.value }))}
-            style={{ width: '100%', marginTop: '0.5rem' }}
-          />
-          <br />
-          <button type="submit">{editingReviewId ? "Salva modifiche" : "Invia recensione"}</button>
-          {editingReviewId && (
-            <button type="button" onClick={() => {
-              setEditingReviewId(null);
-              setNewReview({ rating: 5, comment: '' });
-            }}>Annulla</button>
-          )}
-        </form>
+        <section className="review-form-section">
+          <form onSubmit={handleReviewSubmit} className="review-form">
+            <h3>{editingReviewId ? "Modifica la recensione" : "Scrivi una recensione"}</h3>
+            <label>Valutazione (1-5): </label>
+            <select
+              value={newReview.rating}
+              onChange={e => setNewReview(prev => ({ ...prev, rating: e.target.value }))}
+            >
+              {[1, 2, 3, 4, 5].map(v => <option key={v} value={v}>{v}</option>)}
+            </select>
+            <br />
+            <textarea
+              placeholder="Scrivi qui il tuo commento (opzionale)"
+              value={newReview.comment}
+              onChange={e => setNewReview(prev => ({ ...prev, comment: e.target.value }))}
+            />
+            <br />
+            <button type="submit" className="btn-submit">
+              {editingReviewId ? "Salva modifiche" : "Invia recensione"}
+            </button>
+            {editingReviewId && (
+              <button
+                type="button"
+                className="btn-cancel"
+                onClick={() => {
+                  setEditingReviewId(null);
+                  setNewReview({ rating: 5, comment: '' });
+                }}
+              >
+                Annulla
+              </button>
+            )}
+          </form>
+        </section>
       )}
 
-      {reviews.length > 0 ? (
-        <ul>
-          {reviews.map(r => (
-            <li key={r._id} style={{ marginBottom: '1rem' }}>
-              <strong>{r.user?.username || "Anonimo"}</strong> — {new Date(r.date).toLocaleDateString()}<br />
-              ⭐ {r.rating}/5<br />
-              <em>{r.comment}</em>
-              {user && (r.user._id === user._id || user.isAdmin) && (
-                <div>
-                  {r.user._id === user._id && (
-                    <button onClick={() => handleEdit(r)}>Modifica</button>
-                  )}
-                  <button onClick={() => handleDeleteReview(r._id)}>Elimina</button>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>Nessuna recensione disponibile.</p>
-      )}
+      <section className="reviews-list-section">
+        <h3>📝 Recensioni</h3>
+        {reviews.length > 0 ? (
+          <ul className="reviews-list">
+            {reviews.map(r => (
+              <li key={r._id} className="review-item">
+                <strong>{r.user?.username || "Anonimo"}</strong> — {new Date(r.date).toLocaleDateString()}<br />
+                ⭐ {r.rating}/5<br />
+                <em>{r.comment}</em>
+                {user && (r.user._id === user._id || user.isAdmin) && (
+                  <div className="review-actions">
+                    {r.user._id === user._id && (
+                      <button className="btn-edit-review" onClick={() => handleEdit(r)}>Modifica</button>
+                    )}
+                    <button className="btn-delete-review" onClick={() => handleDeleteReview(r._id)}>Elimina</button>
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Nessuna recensione disponibile.</p>
+        )}
+      </section>
     </div>
   );
 };

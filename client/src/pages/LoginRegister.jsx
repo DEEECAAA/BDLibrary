@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import '../styles/LoginRegister.css';
 
 const LoginRegister = ({ onLogin }) => {
   const [isRegisterMode, setIsRegisterMode] = useState(false);
@@ -35,26 +36,46 @@ const LoginRegister = ({ onLogin }) => {
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
+    <div className="login-register">
       <h2>{isRegisterMode ? 'Registrati' : 'Accedi'}</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <input name="username" placeholder="Username" required onChange={handleChange} />
+          <input
+            name="username"
+            placeholder="Username"
+            required
+            onChange={handleChange}
+            value={formData.username}
+          />
         </div>
         {isRegisterMode && (
           <div>
-            <input name="email" type="email" placeholder="Email" required onChange={handleChange} />
+            <input
+              name="email"
+              type="email"
+              placeholder="Email"
+              required
+              onChange={handleChange}
+              value={formData.email}
+            />
           </div>
         )}
         <div>
-          <input name="password" type="password" placeholder="Password" required onChange={handleChange} />
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            required
+            onChange={handleChange}
+            value={formData.password}
+          />
         </div>
         <button type="submit">
           {isRegisterMode ? 'Registrati' : 'Accedi'}
         </button>
       </form>
-      <p style={{ marginTop: '1rem' }}>
-        {isRegisterMode ? 'Hai già un account?' : 'Non hai un account?'}{" "}
+      <p>
+        {isRegisterMode ? 'Hai già un account?' : 'Non hai un account?'}{' '}
         <button type="button" onClick={() => setIsRegisterMode(!isRegisterMode)}>
           {isRegisterMode ? 'Accedi' : 'Registrati'}
         </button>

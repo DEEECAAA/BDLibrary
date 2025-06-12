@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
 import Home from './pages/Home';
 import BookList from './components/BookList';
 import LoginRegister from './pages/LoginRegister';
 import UserProfile from './pages/UserProfile';
 import BookPage from './pages/BookPage';
+import './styles/Header.css';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -31,25 +32,21 @@ function App() {
 
   return (
     <Router>
-      <header style={{ backgroundColor: '#282c34', padding: '1rem', color: 'white' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h2 style={{ margin: 0 }}>📘 Book Reviews</h2>
-          <div>
-            <Link to="/" style={{ color: 'white', marginRight: '1rem' }}>Home</Link>
+      <header className="app-header">
+        <div className="header-container">
+          <h2 className="header-title">📘 Book Reviews</h2>
+          <div className="nav-links">
+            <Link to="/">Home</Link>
             {user ? (
               <>
-                <Link to="/profile" style={{ color: 'white', marginRight: '1rem' }}>
-                  👤 {user.username}
-                </Link>
-                <button onClick={handleLogout} style={{ padding: '0.5rem 1rem' }}>
+                <Link to="/profile">👤 {user.username}</Link>
+                <button className="header-button" onClick={handleLogout}>
                   Logout
                 </button>
               </>
             ) : (
               <Link to="/auth">
-                <button style={{ padding: '0.5rem 1rem' }}>
-                  Login / Registrati
-                </button>
+                <button className="header-button">Login / Registrati</button>
               </Link>
             )}
           </div>

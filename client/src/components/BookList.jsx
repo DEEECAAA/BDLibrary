@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
+import "../styles/BookList.css";
 
 function BookList() {
   const [books, setBooks] = useState([]);
@@ -32,37 +33,26 @@ function BookList() {
   };
 
   return (
-    <div>
-      <h2>Lista dei Libri</h2>
-      {books.length === 0 ? (
-        <p>Nessun libro trovato.</p>
-      ) : (
-        <ul>
-          {books.map(book => (
-            <li key={book._id} style={{ marginBottom: "1rem" }}>
-              <Link to={`/books/${book._id}`}>
-                <strong>{book.title}</strong>
-              </Link>{" "}
-              — {book.genre}
-              {user?.isAdmin && (
-                <button
-                  onClick={() => handleDeleteBook(book._id)}
-                  style={{
-                    marginLeft: "1rem",
-                    backgroundColor: "red",
-                    color: "white",
-                    border: "none",
-                    padding: "0.3rem 0.6rem",
-                    cursor: "pointer"
-                  }}
-                >
-                  Elimina libro (Admin)
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
+    <div className="book-list">
+      {books.map((book) => (
+        <div className="book-card" key={book._id}>
+          <Link to={`/books/${book._id}`}>
+            <div className="book-image">
+              <img
+                src={book.imageUrl || "https://via.placeholder.com/150"}
+                alt={book.title}
+              />
+            </div>
+            <h3 className="book-title">{book.title}</h3>
+          </Link>
+
+          {user?.isAdmin && (
+            <div className="book-actions">
+              <button onClick={() => handleDeleteBook(book._id)}>Elimina</button>
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 }

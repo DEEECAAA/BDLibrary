@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import api from "../services/api";
+import "../styles/AddBookForm.css";
 
 const AddBookForm = ({ onBookAdded }) => {
   const [title, setTitle] = useState("");
@@ -11,7 +12,7 @@ const AddBookForm = ({ onBookAdded }) => {
     e.preventDefault();
     try {
       await api.post("/books", { title, genre, author });
-      onBookAdded(); // aggiorna la lista
+      onBookAdded();
       setTitle("");
       setGenre("");
       setAuthor("");
@@ -22,19 +23,21 @@ const AddBookForm = ({ onBookAdded }) => {
   };
 
   return (
-    <div>
-      <button onClick={() => setShowForm(!showForm)} style={{ marginBottom: "1rem" }}>
+    <div className="add-book-container">
+      <button
+        className="add-book-toggle-btn"
+        onClick={() => setShowForm(!showForm)}
+      >
         {showForm ? "Annulla" : "➕ Aggiungi Libro"}
       </button>
       {showForm && (
-        <form onSubmit={handleSubmit} style={{ marginBottom: "2rem" }}>
+        <form className="add-book-form" onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="Titolo"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
-            style={{ marginRight: "1rem" }}
           />
           <input
             type="text"
@@ -42,7 +45,6 @@ const AddBookForm = ({ onBookAdded }) => {
             value={genre}
             onChange={(e) => setGenre(e.target.value)}
             required
-            style={{ marginRight: "1rem" }}
           />
           <input
             type="text"
@@ -50,7 +52,6 @@ const AddBookForm = ({ onBookAdded }) => {
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
             required
-            style={{ marginRight: "1rem" }}
           />
           <button type="submit">Salva</button>
         </form>

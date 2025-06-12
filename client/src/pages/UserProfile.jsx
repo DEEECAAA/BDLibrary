@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import api from '../services/api';
+import '../styles/UserProfile.css';
 
 const UserProfile = ({ user, onLogout }) => {
   const [formData, setFormData] = useState({
@@ -41,11 +42,11 @@ const UserProfile = ({ user, onLogout }) => {
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
+    <div className="user-profile">
       <h2>👤 Profilo Utente</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Username:</label><br />
+          <label>Username:</label>
           <input
             type="text"
             name="username"
@@ -54,8 +55,8 @@ const UserProfile = ({ user, onLogout }) => {
           />
         </div>
 
-        <div style={{ marginTop: '1rem' }}>
-          <label>Nuova Password:</label><br />
+        <div>
+          <label>Nuova Password:</label>
           <input
             type="password"
             name="password"
@@ -65,30 +66,17 @@ const UserProfile = ({ user, onLogout }) => {
           />
         </div>
 
-        <button type="submit" style={{ marginTop: '1rem' }}>
-          Salva Modifiche
-        </button>
+        <button type="submit">Salva Modifiche</button>
       </form>
 
-      {message && <p style={{ marginTop: '1rem' }}>{message}</p>}
+      {message && <p className="message">{message}</p>}
 
-      <p style={{ marginTop: '2rem' }}>
-        <strong>Email:</strong> {user.email}<br />
-        <strong>Registrato il:</strong> {new Date(user.registration_date).toLocaleDateString()}
-      </p>
+      <div className="info">
+        <p><strong>Email:</strong> {user.email}</p>
+        <p><strong>Registrato il:</strong> {new Date(user.registration_date).toLocaleDateString()}</p>
+      </div>
 
-      <button
-        onClick={handleDeleteAccount}
-        style={{
-          marginTop: '2rem',
-          backgroundColor: '#ff4d4d',
-          color: 'white',
-          border: 'none',
-          padding: '0.5rem 1rem',
-          cursor: 'pointer',
-          borderRadius: '5px'
-        }}
-      >
+      <button className="delete-btn" onClick={handleDeleteAccount}>
         🗑 Elimina Account
       </button>
     </div>

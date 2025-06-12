@@ -9,9 +9,9 @@ const Home = () => {
   const handleRefresh = () => setRefresh(!refresh);
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Benvenuto nella Libreria Digitale 📚</h1>
-      <p>Consulta, gestisci e recensisci tutti i libri che vuoi.</p>
+    <div style={{ padding: '2rem', margin: '0 auto' }}>
+      <h1 style={{ marginBottom: '0.5rem' }}>Benvenuto nella Libreria Digitale 📚</h1>
+      <p style={{ marginBottom: '1.5rem' }}>Consulta, gestisci e recensisci tutti i libri che vuoi.</p>
       {user?.isAdmin && <AddBookForm onBookAdded={handleRefresh} />}
       <BookList key={refresh} />
     </div>
