@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
 import "../styles/BookList.css";
+import defaultCover from '../assets/copertina.png';
+
 
 function BookList() {
   const [books, setBooks] = useState([]);
@@ -39,7 +41,7 @@ function BookList() {
           <Link to={`/books/${book._id}`}>
             <div className="book-image">
               <img
-                src={book.imageUrl || "https://via.placeholder.com/150"}
+                src={defaultCover}
                 alt={book.title}
               />
             </div>

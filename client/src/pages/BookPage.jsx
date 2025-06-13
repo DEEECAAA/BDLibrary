@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import '../styles/BookPage.css';
+import defaultCover from '../assets/copertina.png';
 
 const BookPage = () => {
   const { id } = useParams();
@@ -93,7 +94,7 @@ const BookPage = () => {
     <div className="bookpage-container">
       <section className="book-details">
         <img
-          src={book.imageUrl || "https://via.placeholder.com/150"}
+          src={defaultCover}
           alt={book.title}
           className="book-cover"
         />
