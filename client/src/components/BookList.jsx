@@ -26,7 +26,7 @@ function BookList() {
     if (window.confirm("Vuoi davvero eliminare questo libro?")) {
       try {
         await api.delete(`/books/${bookId}`, { data: { user } });
-        fetchBooks(); // aggiorna la lista
+        fetchBooks();
       } catch (err) {
         console.error("Errore durante eliminazione libro:", err);
         alert("Errore durante l’eliminazione del libro");

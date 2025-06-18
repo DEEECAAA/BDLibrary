@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import '../styles/LoginRegister.css';
+import '../styles/Background.css';
 
 const LoginRegister = ({ onLogin }) => {
   const [isRegisterMode, setIsRegisterMode] = useState(false);

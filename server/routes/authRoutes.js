@@ -18,7 +18,7 @@ router.post('/register', async (req, res) => {
         username: newUser.username,
         email: newUser.email,
         isAdmin: newUser.isAdmin,
-        registration_date: newUser.registration_date // ✅ questo campo mancava
+        registration_date: newUser.registration_date
       }
     });
   } catch (err) {

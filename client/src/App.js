@@ -36,10 +36,10 @@ function App() {
         <div className="header-container">
           <h2 className="header-title">📘 Book Reviews</h2>
           <div className="nav-links">
-            <Link to="/">Home</Link>
+            <Link to="/" className="header-button">Home</Link>
             {user ? (
               <>
-                <Link to="/profile">👤 {user.username}</Link>
+                <Link to="/profile" className="header-button">👤 {user.username}</Link>
                 <button className="header-button" onClick={handleLogout}>
                   Logout
                 </button>

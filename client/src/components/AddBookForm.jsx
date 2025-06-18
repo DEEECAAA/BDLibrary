@@ -28,7 +28,7 @@ const AddBookForm = ({ onBookAdded }) => {
         className="add-book-toggle-btn"
         onClick={() => setShowForm(!showForm)}
       >
-        {showForm ? "Annulla" : "➕ Aggiungi Libro"}
+        {showForm ? "Annulla" : "➕ Aggiungi Libro (Admin)"}
       </button>
       {showForm && (
         <form className="add-book-form" onSubmit={handleSubmit}>
